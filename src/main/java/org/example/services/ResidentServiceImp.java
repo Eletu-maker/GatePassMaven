@@ -1,6 +1,5 @@
-package org.example.servives;
+package org.example.services;
 
-import org.example.data.model.AccessCode;
 import org.example.dto.request.GenerateAccessCodeRequest;
 import org.example.dto.request.ResidentLoginRequest;
 import org.example.dto.request.ResidentRegisterRequest;

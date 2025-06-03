@@ -1,4 +1,4 @@
-package org.example.servives;
+package org.example.services;
 
 import org.example.data.model.Resident;
 import org.example.data.repository.Residents;
@@ -30,6 +30,7 @@ public class ResidentService implements ResidentServiceImp{
         else save(request);
         response.setMessage("Resident register successful");
         return response;
+
     }
 
     private void save(ResidentRegisterRequest request){
@@ -42,6 +43,7 @@ public class ResidentService implements ResidentServiceImp{
         resident.setEmail(request.getEmail());
         validatePhone(request);
         resident.setPhoneNumber(request.getPhoneNumber());
+        resident.setId(request.getId());
         residents.save(resident);
     }
 
@@ -79,6 +81,7 @@ public class ResidentService implements ResidentServiceImp{
         accessCodeResponse.setTimeCreated(request.getTimeCreated());
         accessCodeResponse.setExpireTime(request.getExpireTime());
         accessCodeResponse.setActive(request.isActive());
+        accessCodeResponse.setId(request.getWhomToSee().getId());
         accessCodeResponse.setMessage("Token generated");
 
         return accessCodeResponse;

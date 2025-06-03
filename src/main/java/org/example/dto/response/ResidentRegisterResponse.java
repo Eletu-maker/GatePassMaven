@@ -1,4 +1,8 @@
 package org.example.dto.response;
 
-public class ResudentRegusterResponse {
+import lombok.Data;
+
+@Data
+public class ResidentRegisterResponse {
+    private String message;
 }
