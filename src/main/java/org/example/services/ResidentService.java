@@ -2,8 +2,10 @@ package org.example.services;
 
 import org.example.data.model.AccessCode;
 import org.example.data.model.Resident;
+import org.example.data.model.Visitor;
 import org.example.data.repository.AccessCodes;
 import org.example.data.repository.Residents;
+import org.example.data.repository.Visitors;
 import org.example.dto.request.GenerateAccessCodeRequest;
 import org.example.dto.request.ResidentLoginRequest;
 import org.example.dto.request.ResidentRegisterRequest;
@@ -26,6 +28,8 @@ public class ResidentService implements ResidentServiceImp{
     private Residents residents;
     @Autowired
     private AccessCodes accessCodes;
+    @Autowired
+    private Visitors visitors;
 
     @Override
     public ResidentRegisterResponse register(ResidentRegisterRequest request) {
@@ -69,30 +73,41 @@ public class ResidentService implements ResidentServiceImp{
 
 
     @Override
-    public AccessCodeResponse generateToken(GenerateAccessCodeRequest request) {
+    public AccessCodeResponse generateToken(GenerateAccessCodeRequest request, Visitor visitor) {
         AccessCodeResponse accessCodeResponse = new AccessCodeResponse();
         AccessCode accessCode = new AccessCode();
-        accessCode.setWhomToSee(request.getWhomToSee());
-        accessCode.setVisitor(request.getVisitor());
-
-        String otp = "";
-        for (int count=0; count<5; count++) {
-            char[] chars = {'1', '2', '3', '4', '5', '6', '7', '8', '9', '0'};
-            Random rand = new Random();
-            int randomNumber = rand.nextInt(10);
-            otp += chars[randomNumber];
+        if (visitor.getId() == null) {
+            visitor = visitors.save(visitor);
         }
-        accessCode.setToken(otp);
+        accessCode.setWhomToSee(request.getWhomToSee());
+        validateVisitorPhone(visitor);
+        accessCode.setVisitor(visitor);
+
         accessCode.setTimeCreated(request.getTimeCreated());
         accessCode.setExpireTime(request.getExpireTime());
         accessCode.setUsed(request.isUsed());
+        String token;
+        do {
+            token = getOtp();
+        } while (accessCodes.existsByToken(token));
+        accessCode.setToken(getOtp());
         //accessCode.setId(request.getWhomToSee().getId());
         accessCodeResponse.setMessage("Token generated");
         accessCodes.save(accessCode);
         return accessCodeResponse;
     }
 
+    private String getOtp() {
+        String otp = "";
+        for (int count = 0; count < 5; count++) {
+            char[] chars = {'1', '2', '3', '4', '5', '6', '7', '8', '9', '0'};
+            Random rand = new Random();
+            int randomNumber = rand.nextInt(10);
+            otp += chars[randomNumber];
 
+        }
+        return otp;
+    }
 
 
 }

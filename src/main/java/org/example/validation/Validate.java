@@ -1,6 +1,7 @@
 package org.example.validation;
 
 import org.example.data.model.User;
+import org.example.data.model.Visitor;
 import org.example.dto.request.ResidentRegisterRequest;
 import org.example.exception.Email;
 import org.example.exception.Name;
@@ -20,10 +21,20 @@ public class Validate {
         }
     }
 
+    public static void validateVisitorPhone(Visitor visitor){
+        if(visitor.getPhoneNumber().length() != 11){
+            throw new PhoneNumber("phone number must be 11 digits");
+        }
+
+
+    }
+
     public static void validatePhone(User request){
         if(request.getPhoneNumber().length() != 11){
             throw new PhoneNumber("phone number must be 11 digits");
         }
+
+
     }
 
     public static void validateEmail(User request){

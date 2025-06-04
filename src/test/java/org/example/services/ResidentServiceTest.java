@@ -1,5 +1,6 @@
 package org.example.services;
 
+import org.example.data.model.Visitor;
 import org.example.dto.request.GenerateAccessCodeRequest;
 import org.example.dto.request.ResidentLoginRequest;
 import org.example.dto.request.ResidentRegisterRequest;
@@ -53,10 +54,16 @@ public class ResidentServiceTest {
     @Test
     public void testGenerateToken(){
         GenerateAccessCodeRequest generateAccessCodeRequest= new GenerateAccessCodeRequest();
-        AccessCodeResponse accessCodeResponse = residentService.generateToken(generateAccessCodeRequest);
+        AccessCodeResponse accessCodeResponse = residentService.generateToken(generateAccessCodeRequest,dVisitor());
         assertEquals("Token generated",accessCodeResponse.getMessage());
 
 
+    }
+
+    private Visitor dVisitor(){
+        Visitor visitor = new Visitor();
+        visitor.setPhoneNumber("09134969393");
+        return visitor;
     }
 
 
