@@ -5,4 +5,5 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface Securities extends MongoRepository<Security,String> {
     Security findByEmail(String email);
+    boolean existsByEmail(String email);
 }

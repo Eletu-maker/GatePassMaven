@@ -7,14 +7,9 @@ import org.springframework.data.annotation.Id;
 
 @Data
 @Document("Residents")
-public class Resident {
-    private String name;
+public class Resident extends User {
     @Id
     private String id ;
-    private String phoneNumber;
-    private String email;
-    private String password;
-    private  boolean logIn;
     private String address;
 
 

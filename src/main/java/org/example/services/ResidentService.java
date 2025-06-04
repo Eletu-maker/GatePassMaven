@@ -1,6 +1,8 @@
 package org.example.services;
 
+import org.example.data.model.AccessCode;
 import org.example.data.model.Resident;
+import org.example.data.repository.AccessCodes;
 import org.example.data.repository.Residents;
 import org.example.dto.request.GenerateAccessCodeRequest;
 import org.example.dto.request.ResidentLoginRequest;
@@ -22,6 +24,8 @@ import static org.example.validation.Validate.*;
 public class ResidentService implements ResidentServiceImp{
     @Autowired
     private Residents residents;
+    @Autowired
+    private AccessCodes accessCodes;
 
     @Override
     public ResidentRegisterResponse register(ResidentRegisterRequest request) {
@@ -55,7 +59,7 @@ public class ResidentService implements ResidentServiceImp{
         if(!resident.getPassword().equals(request.getPassword())){
             throw new IncorrectPassword("Wrong password");
         }
-        resident.setLogIn(true);
+        resident.setLogin(true);
         residents.save(resident);
         response.setMessages("Login successful");
 
@@ -67,8 +71,9 @@ public class ResidentService implements ResidentServiceImp{
     @Override
     public AccessCodeResponse generateToken(GenerateAccessCodeRequest request) {
         AccessCodeResponse accessCodeResponse = new AccessCodeResponse();
-        accessCodeResponse.setWhomToSee(request.getWhomToSee());
-        accessCodeResponse.setVisitor(request.getVisitor());
+        AccessCode accessCode = new AccessCode();
+        accessCode.setWhomToSee(request.getWhomToSee());
+        accessCode.setVisitor(request.getVisitor());
 
         String otp = "";
         for (int count=0; count<5; count++) {
@@ -77,13 +82,13 @@ public class ResidentService implements ResidentServiceImp{
             int randomNumber = rand.nextInt(10);
             otp += chars[randomNumber];
         }
-        accessCodeResponse.setToken(otp);
-        accessCodeResponse.setTimeCreated(request.getTimeCreated());
-        accessCodeResponse.setExpireTime(request.getExpireTime());
-        accessCodeResponse.setActive(request.isActive());
-        accessCodeResponse.setId(request.getWhomToSee().getId());
+        accessCode.setToken(otp);
+        accessCode.setTimeCreated(request.getTimeCreated());
+        accessCode.setExpireTime(request.getExpireTime());
+        accessCode.setUsed(request.isUsed());
+        //accessCode.setId(request.getWhomToSee().getId());
         accessCodeResponse.setMessage("Token generated");
-
+        accessCodes.save(accessCode);
         return accessCodeResponse;
     }
 

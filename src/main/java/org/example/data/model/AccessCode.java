@@ -6,6 +6,7 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 @Data
 @Document("AccessCodes")
@@ -15,9 +16,9 @@ public class AccessCode {
     private String id;
     @DBRef
     private Resident WhomToSee;
-    private LocalDate timeCreated =LocalDate.now();
-    private LocalDate expireTime = LocalDate.now().plusDays(1);
-    private boolean active = false ;
+    private LocalDateTime timeCreated =LocalDateTime.now();
+    private LocalDateTime expireTime = LocalDateTime.now().plusDays(1);
+    private boolean used ;
     @DBRef
     private Visitor visitor;
 

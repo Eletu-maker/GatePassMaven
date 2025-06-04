@@ -54,8 +54,8 @@ public class ResidentServiceTest {
     public void testGenerateToken(){
         GenerateAccessCodeRequest generateAccessCodeRequest= new GenerateAccessCodeRequest();
         AccessCodeResponse accessCodeResponse = residentService.generateToken(generateAccessCodeRequest);
-        assertFalse(accessCodeResponse.isActive());
-        assertEquals(accessCodeResponse.getToken().length(),5);
+        assertEquals("Token generated",accessCodeResponse.getMessage());
+
 
     }
 

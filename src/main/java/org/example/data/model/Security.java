@@ -6,13 +6,10 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
 @Document("Security")
-public class Security {
-    private String name;
+public class Security extends User{
     @Id
     private String id ;
-    private String phoneNumber;
-    private String email;
-    private String password;
+
 
 
 
